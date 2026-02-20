@@ -1,0 +1,52 @@
+#Due to local format setting, dataset was loaded through Power Query instead of opened manually
+#found error in loading date format, reformulating manually with DATE and TIMEVALUE
+
+A. Data Understanding
+- 541909 rows input
+- 8 columns. Standardize name: Invoice No (InvoiceNo), Stock Code (StockCode), Description, Quantity, Invoice Date (InvoiceDate), Unit Price (UnitPrice), Customer ID (CustomerID), Country
+- =COUNTBLANK each column. Description (1454 null)(≈0.27%), Customer ID (135080)(≈24.9%)*
+- Found 5268 (≈0.97%) duplicated values, 536639 values are unique. Copy new table without duplicate values. 
+
+*nulls in description are very small. Its okay.
+*nulls in Customer ID couldn't be analyzed in customer database
+
+B.1 Structural Cleaning
+- Format checking: Quantity, Unit Price right aligned, summable, and number format. Date in timestamp custom format, changeable to other date format. ISNUMBER = True
+
+B.2 Content cleaning: found large number of value in negative quantity (10587)(≈2%). These value always in line with "C" invoice No, and anomaly value of description, etc
+- Labeling Valid Sales with No (11763) and Yes (524877)(≈2.2% values are return / adjustment / anomaly)
+- Copy cleaned data specifically UK region for analysis (479985 rows)
+- Clean and Trim Description column
+
+C. Data Transformation
+- Add calculated column to find revenue each row.
+- Due to pivot error, additional helper columns needed. Extract Day and Hour from invoice date to generate time section, and generate customer type (member/guest)
+- Add new measures: Average Transaction Per Day, Average Sales Per Transaction, etc 
+
+D. Business Requirement
+- Business Data Understanding: Data from Desember 2010 - Desember 2011, Retail operate everyday except primary public holiday and Saturday from 8am to 17pm
+- Goal : Understanding retail performance to improve sales, operation, and marketing.
+- Target audience: Marketing team (customer understanding), Sales team (product performance), Management (strategic decisions).
+- Key questions : What products performed the most (sales), how trend happened across sales, how many customer have registered, and When peak season for entire year.
+
+E. Data Visualization and Analysis
+- Building pivot table, chart, and dashboard based on requirement
+- Analyze data by comparing visual chart or modify setting to see any pattern or insight
+
+F. Insight and Conclusion
+- Write report including insight and conclusion in separate page
+- provide recommendations
+- Finishing
+
+Additional Unique Insights and Recommendations
+- Having product's category and sub-category for clasification and better analysis as group.
+- Almost half of customer (42.06%) are guest in January event though the revenue contribution remain small (21.27%).
+- Programming membership offering for guest customer to increase membership ratio. Based on data, most of guest customer made transactions between 13PM and 18PM.
+- Holding special night sale for better transaction and staffing distribution.
+
+Cross-Sell Insights: Top 5 Generating-Revenue Product Pairings (Based On Transaction Count)
+1. Dotcom Postage (706) with Jumbo Bag Red Retrospot (483) or Jumbo Storage Bag Suki (395)
+2. Papercraft Little Birdie (1) with none
+3. Regency Cakestand 3 Tier (1685) with Roses Regency Teacup and Saucer (454) or Green Regency Teacup and Saucer (454)
+4. Party Bunting (1593) with Spotty Bunting (454) or White Haging Heart T-Light Holder (378)
+5. White Hanging Hearth T-Light Holder (2162) with Red Hanging Hearth T-Light Holder (468) and Jumbo Bag Red Retrospot (436) 
